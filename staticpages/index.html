@@ -1,0 +1,314 @@
+<html>
+    <head>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    </head>
+    <style>
+        body {
+          margin: 0;
+          font-family: Verdana, Helvetica, sans-serif;
+        }
+    
+        .topnav {
+          overflow: hidden;
+          background-color: white;
+        }
+    
+        .topnav a {
+          float: left;
+          color: black;
+          text-align: center;
+          text-transform: bold;
+          padding: 14px 16px;
+          text-decoration: none;
+          font-size: 12px;
+        }
+    
+        .topnav a:hover {
+          background-color: #ddd;
+          color: black;
+        }
+    
+        .topnav a.active {
+          background-color: #4ab13c;
+          color: white;
+        }
+    
+        body, html {
+          height: 100%;
+          margin: 0;
+        }
+    </style>
+
+    <body>
+         <div class="topnav">
+                    <a href="ritatripadvisor.html">HOME</a>
+                    <a href="aboutus.html">ABOUT</a>
+                    <a href="contact.html">MORE</a>
+                    <a class="active" href="index.html"><B>DATASET</b></a>
+        </div>
+
+        <h1>Travel Agency List</h1> 
+        <div> <button id="showCreateButton" onclick="showCreate()">Create</button></div>
+        <div>
+            <table class="table" id="travelagencyTable">
+                <tr>
+					<th>ID</th>
+                    <th>fullname</th>
+                    <th>firmname</th>
+                    <th>email</th>
+					<th>Update</th>
+					<th>Delete</th>
+                </tr>
+				<tr id="12">
+					<td>12</td>
+                    <td>Martynas Makalis</td>
+                    <td>'Vilnius' Travel agency</td>
+                    <td>vilniusta@gmail.com</td>
+                    <td><button onclick="showUpdate(this)">Update</button></td>
+                    <td><button onclick="doDelete(this)">Delete</button></td>
+                </tr>
+                <tr>
+				<tr id="13">
+					<td>13</td>
+                    <td>Renata Butkeviciene</td>
+                    <td>Journey Advisor</td>
+                    <td>rjourneyadvisor@gmail.com</td>
+                    <td><button onclick="showUpdate(this)">Update</button></td>
+                    <td><button onclick="doDelete(this)">Delete</button></td>
+                </tr>
+				<tr id="14">
+					<td>14</td>
+                    <td>Matas Jonaitis</td>
+                    <td>Travel quide 'Liepa'</td>
+                    <td>liepatq@yahoo.com</td>
+                    <td><button onclick="showUpdate(this)">Update</button></td>
+                    <td><button onclick="doDelete(this)">Delete</button></td>	
+                </tr>
+				
+            </table>
+        </div>
+        <div id="create-update" style="display:none">
+            <h2>create-edit</h2>
+            <table id="createUpdateForm">
+                <tr>
+                    <td>ID</td>
+                    <td><input type="text" name="ID" id="idInput"></td>
+                </tr>
+                <tr>
+                    <td>fullname</td>
+                    <td><input type="text" name="fullname"></td>
+                </tr>
+                <tr>
+                    <td>firmname</td>
+                    <td><input type="text" name="firmname"></td>
+                </tr>
+                <tr>    
+                    <td>email</td>
+                    <td><input type="text" name="email"></td>
+                </tr>
+                <tr>
+                    <td></td><td>
+                        <button id="create-button" onclick="doCreate()">Create</button>     
+                        <button id="update-button" onclick="doUpdate()">Update</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="display">
+            <h2>Travelagency</h2>
+            <button onClick="showCreate()">Create</button>
+            <table id="travelagencyTable" class="table">
+                <tr>
+                    <th>ID</th><th>fullname</th><th>firmname</th><th>email</th><th></th><th></th>
+                </tr>
+                
+            </table>
+
+        </div>
+
+        <script>
+            function showCreate(){
+                document.getElementById('display').style.display = "none"
+                document.getElementById('update-button').style.display = "none"
+                document.getElementById('create-button').style.display = "block"
+                document.getElementById('create-update').style.display = "block"
+
+            }
+            function showUpdate(thisElem){
+                var rowElement = thisElem.parentNode.parentNode;
+                travelagency = readTravelagencyFromRow(rowElement)
+                populateForm(travelagency)
+
+                document.getElementById('display').style.display = "none"
+                document.getElementById('update-button').style.display = "block"
+                document.getElementById('create-button').style.display = "none"
+                document.getElementById('create-update').style.display = "block"
+
+            }
+            function readTravelagencyFromRow(rowElement){
+                travelagency = {}
+                travelagency.ID = rowElement.getAttribute("ID");
+                travelagency.fullname = rowElement.cells[1].firstChild.textContent
+                travelagency.firmname = rowElement.cells[2].firstChild.textContent
+                travelagency.email = rowElement.cells[3].firstChild.textContent
+
+                return travelagency
+                
+            }
+            function populateForm(travelagency){
+                var form = document.getElementById('createUpdateForm')
+
+                
+                form.querySelector('input[name="ID"]').value = travelagency.ID
+                form.querySelector('input[name="ID"]').disabled=true
+                
+                form.querySelector('input[name="fullname"]').value = travelagency.fullname
+                form.querySelector('input[name="firmname"]').value = travelagency.firmname
+                form.querySelector('input[name="email"]').value = travelagency.email      
+            }
+            function clearForm() {
+                    var form = document.getElementById('createUpdateForm')
+
+
+                    form.querySelector('input[name="ID"]').value = ''
+                    form.querySelector('input[name="ID"]').disabled = false
+
+                    form.querySelector('input[name="fullname"]').value = ''
+                    form.querySelector('input[name="firmname"]').value = ''
+                    form.querySelector('input[name="email"]').value = ''
+                }
+
+            function doCreate(){
+                console.log("in doCreate")
+                travelagency= getTravelagencyFromForm()
+                console.log(travelagency)
+                $.ajax({
+                    url:"/travelagency",
+                    data:JSON.stringify(travelagency),
+                    method:"POST",
+                    dataType:"JSON",
+                    contentType: "application/json; charset=utf-8",
+                    success:function(result){
+                        console.log(result) 
+                        addTravelagencyToTable(travelagency)
+                        showDisplay()
+                        clearForm()
+
+                    },
+                    error:function(xhr,status,error){
+                        console.log("error"+error)
+                    }
+                })
+               
+            }
+            function doUpdate(){
+                travelagency = getTravelagencyFromForm()
+                updateServer(travelagency)
+                
+            }
+            function updateServer(travelagency){
+               $.ajax({
+                    url: "/travelagency/"+travelagency.ID,
+                    data: JSON.stringify(travelagency),
+                    method: "PUT",
+                    dataType: "JSON",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        console.log(result)
+  kljoij"                      updateTableRow(travelagency)
+                        showDisplay()
+                        clearForm()
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error" + error)
+                    }
+                })
+            }
+            function doDelete(thisElem){
+                var tableElement = document.getElementById('travelagencyTable');
+                var rowElement = thisElem.parentNode.parentNode;
+                var index = rowElement.rowIndex;
+                ID = rowElement.getAttribute("id");
+                $.ajax({
+                    url:"/travelagency/"+ID,
+                    method:"DELETE",
+                    dateType:"JSON",
+                    success:function(result){
+                        tableElement.deleteRow(index);
+                    },
+                    error:function(xhr,status,error){
+                        console.log(error)
+                    }
+                })
+                
+            }
+            function updateTableRow(travelagency){
+                rowElement = document.getElementById(travelagency.ID)
+                rowElement.cells[1].firstChild.textContent = travelagency.fullname
+                rowElement.cells[2].firstChild.textContent = travelagency.firmname
+                rowElement.cells[3].firstChild.textContent = travelagency.email
+                //console.log("updating table")
+            }
+            function getTravelagencyFromForm(){
+                var form = document.getElementById('createUpdateForm')
+
+                var travelagency = {}
+                travelagency.ID = form.querySelector('input[name="ID"]').value
+                travelagency.fullname = form.querySelector('input[name="fullname"]').value
+                travelagency.firmname = form.querySelector('input[name="firmname"]').value
+                travelagency.email = form.querySelector('input[name="email"]').value
+                //console.log(book)
+                 return travelagency
+            }
+             function showDisplay() {
+                    document.getElementById('display').style.display = "block"
+                    document.getElementById('create-update').style.display = "none"
+
+                }
+
+            function populateTable(){
+                //ajax getAll
+               $.ajax({
+                   url:'http://127.0.0.1:5000/travelagency',
+                   method:'GET',
+                   datatype:'JSON',
+                   success:function(results){
+                        for (travelagency of results){
+                             addTravelagencyToTable(travelagency)
+                        }
+                   },
+                   error:function (xhr,status,error){
+                       console.log ("error "+error +" code:"+status)
+                   }
+
+               })
+               
+            }
+            function addTravelagencyToTable(travelagency){
+                //console.log("so good so far")
+                tableElem = document.getElementById("travelagencyTable")
+                rowElem = tableElem.insertRow(-1)
+                rowElem.setAttribute("id", travelagency.ID)
+                cell1 = rowElem.insertCell(0)
+                cell1.innerHTML = travelagency.ID
+                cell2 = rowElem.insertCell(1)
+                cell2.innerHTML = travelagency.fullname
+                cell3 = rowElem.insertCell(2)
+                cell3.innerHTML = travelagency.firmname
+                cell4 = rowElem.insertCell(3)
+                cell4.innerHTML = travelagency.email
+                cell5 = rowElem.insertCell(4)
+                cell5.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
+                cell6 = rowElem.insertCell(5)
+                cell6.innerHTML = '<button onclick="doDelete(this)">Delete</button>'
+                 }
+            populateTable()
+        </script>
+    </body>
+</html>
+
